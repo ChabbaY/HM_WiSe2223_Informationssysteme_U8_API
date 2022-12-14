@@ -20,24 +20,14 @@ namespace API.Store {
         public DbSet<Address> Addresses { get; set; }
 
         /// <summary>
-        /// database table AddressInformation
+        /// database table Materials
         /// </summary>
-        public DbSet<AddressInformation> AddressInformation { get; set; }
-
-        /// <summary>
-        /// database table Customers
-        /// </summary>
-        public DbSet<Customer> Customers { get; set; }
-
-        /// <summary>
-        /// database table Contacts
-        /// </summary>
-        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Material> Materials { get; set; }
 
         /// <summary>
         /// database table Materials
         /// </summary>
-        public DbSet<Material> Materials { get; set; }
+        public DbSet<Offer> Offers { get; set; }
 
         /// <summary>
         /// database table Positions
@@ -45,13 +35,23 @@ namespace API.Store {
         public DbSet<Position> Positions { get; set; }
 
         /// <summary>
-        /// database table Relations
+        /// database table Positions
         /// </summary>
-        public DbSet<Relation> Relations { get; set; }
+        public DbSet<PriceInformation> PriceInformation { get; set; }
+
+        /// <summary>
+        /// database table Positions
+        /// </summary>
+        public DbSet<PurchaseRequisition> PurchaseRequisitions { get; set; }
 
         /// <summary>
         /// database table Requests
         /// </summary>
         public DbSet<Request> Requests { get; set; }
+
+        /// <summary>
+        /// database table Supplier
+        /// </summary>
+        public DbSet<Supplier> Suppliers { get; set; }
     }
 }

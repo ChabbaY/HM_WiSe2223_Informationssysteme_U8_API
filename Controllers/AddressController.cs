@@ -9,7 +9,7 @@ namespace API.Controllers {
     /// <summary>
     /// This endpoint manages all operations for addresses for one addressinformation.
     /// </summary>
-    [Route("api/addressinformation/{aid}/addresses")]
+    [Route("api/suppliers/{sid}/addresses")]
     [ApiController]
     public class AddressController : ControllerBase {
         private Context context;
@@ -18,38 +18,38 @@ namespace API.Controllers {
         }
 
         /// <summary>
-        /// Returns all addresses.
+        /// Returns all addresses of one supplier.
         /// </summary>
-        /// <param name="aid">AdressInformationId</param>
+        /// <param name="sid">SupplierId</param>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Address[]> GetAllAddresses([FromRoute] int aid) {
-            return Ok(context.Addresses.Where(v => v.AdderssInformationId == aid).ToArray());
+        public ActionResult<Address[]> GetAllAddresses([FromRoute] int sid) {
+            return Ok(context.Addresses.Where(v => v.SupplierId == sid).ToArray());
         }
 
         /// <summary>
-        /// Returns the address with a given id.
+        /// Returns the address with a given id of one supplier.
         /// </summary>
-        /// <param name="aid">AdressInformationId</param>
+        /// <param name="sid">SupplierId</param>
         /// <param name="id">AddressId</param>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Address> GetAddress([FromRoute] int aid, [FromRoute] int id) {
-            var value = context.Addresses.Where(v => (v.AdderssInformationId == aid) && (v.Id == id)).FirstOrDefault();
+        public ActionResult<Address> GetAddress([FromRoute] int sid, [FromRoute] int id) {
+            var value = context.Addresses.Where(v => (v.SupplierId == sid) && (v.Id == id)).FirstOrDefault();
             if (value == null) return NotFound();
             return Ok(value);
         }
 
         /// <summary>
-        /// Adds an address.
+        /// Adds an address to one supplier.
         /// </summary>
-        /// <param name="aid">AddressInformationId</param>
+        /// <param name="sid">SupplierId</param>
         /// <param name="value">new Address</param>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<ActionResult<Address>> AddAddress([FromRoute] int aid, [FromBody] Address value) {
+        public async Task<ActionResult<Address>> AddAddress([FromRoute] int sid, [FromBody] Address value) {
             if (ModelState.IsValid) {
                 //test if address already exists
                 if (context.Addresses.Where(v => v.Id == value.Id).FirstOrDefault() != null) {
@@ -57,14 +57,13 @@ namespace API.Controllers {
                     return Conflict(ModelState); //address with id already exists, we return a conflict
                 }
 
-                //test if referenced address information exists
-                if (context.AddressInformation.Any(a => a.Id == aid) is false)
-                {
-                    ModelState.AddModelError("validationError", "AddressInformation not found");
-                    return NotFound(ModelState);
+                //test if referenced supplier exists
+                if (context.Suppliers.Any(s => s.Id == sid) is false) {
+                    ModelState.AddModelError("validationError", "Supplier not found");
+                    return Conflict(ModelState);
                 }
 
-                value.AdderssInformationId = aid; // set reference
+                value.SupplierId = sid; // set reference
                 context.Addresses.Add(value);
                 await context.SaveChangesAsync();
 

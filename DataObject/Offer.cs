@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.DataObject {
-    public class Request {
+    public class Offer {
         [Key]
         public int Id { get; set; }
 
@@ -14,9 +14,15 @@ namespace API.DataObject {
         public string Deadline { get; set; }
 
         [MaxLength(100)]
+        public string Currency { get; set; }
+
+        [MaxLength(100)]
         public string Comment { get; set; }
 
         [Required]
-        public int PurchaseRequisitionId { get; set; }
+        public int SupplierId { get; set; }
+
+        [Required]
+        public int RequestId { get; set; }
     }
 }

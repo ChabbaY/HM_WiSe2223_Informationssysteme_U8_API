@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers {
     /// <summary>
-    /// This endpoint manages all operations for requests for one customer.
+    /// This endpoint manages all operations for requests.
     /// </summary>
-    [Route("api/customers/{cid}/requests")]
+    [Route("api/requests")]
     [ApiController]
     public class RequestController : ControllerBase {
         private Context context;
@@ -22,20 +22,19 @@ namespace API.Controllers {
         /// </summary>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Request[]> GetAllRequests([FromRoute] int cid) {
-            return Ok(context.Requests.Where(v => v.CustomerId == cid).ToArray());
+        public ActionResult<Request[]> GetAllRequests() {
+            return Ok(context.Requests.ToArray());
         }
 
         /// <summary>
         /// Returns the request with a given id.
         /// </summary>
-        /// <param name="cid">CustomerId</param>
         /// <param name="rid">RequestId</param>
         [HttpGet("{rid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Request> GetRequest([FromRoute] int cid, [FromRoute] int rid) {
-            var value = context.Requests.Where(v => (v.CustomerId == cid) && (v.Id == rid)).FirstOrDefault();
+        public ActionResult<Request> GetRequest([FromRoute] int rid) {
+            var value = context.Requests.Where(v => v.Id == rid).FirstOrDefault();
             if (value == null) return NotFound();
             return Ok(value);
         }
@@ -43,27 +42,24 @@ namespace API.Controllers {
         /// <summary>
         /// Adds a request.
         /// </summary>
-        /// <param name="cid">CustomerId</param>
         /// <param name="value">new Request</param>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<ActionResult<Request>> AddRequest([FromRoute] int cid, [FromBody] Request value) {
+        public async Task<ActionResult<Request>> AddRequest([FromBody] Request value) {
             if (ModelState.IsValid) {
                 //test if request already exists
-                if (context.Requests.Where(v => v.Id == value.Id).FirstOrDefault() != null)
-                {
+                if (context.Requests.Where(v => v.Id == value.Id).FirstOrDefault() != null) {
                     ModelState.AddModelError("validationError", "Request already exists");
                     return Conflict(ModelState); //request with id already exists, we return a conflict
                 }
 
-                //test if referenced customer exists
-                if (context.Customers.Any(c => c.Id == cid) is false) {
-                    ModelState.AddModelError("validationError", "Customer not found");
-                    return NotFound(ModelState);
+                //test if referenced purchase requisition exists
+                if (context.PurchaseRequisitions.Any(pr => pr.Id == value.PurchaseRequisitionId) is false) {
+                    ModelState.AddModelError("validationError", "PurchaseRequisition not found");
+                    return Conflict(ModelState);
                 }
 
-                value.CustomerId = cid; // set reference
                 context.Requests.Add(value);
                 await context.SaveChangesAsync();
 

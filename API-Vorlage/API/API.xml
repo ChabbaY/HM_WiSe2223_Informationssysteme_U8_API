@@ -11,89 +11,23 @@
         </member>
         <member name="M:API.Controllers.AddressController.GetAllAddresses(System.Int32)">
             <summary>
-            Returns all addresses.
+            Returns all addresses of one supplier.
             </summary>
-            <param name="aid">AdressInformationId</param>
+            <param name="sid">SupplierId</param>
         </member>
         <member name="M:API.Controllers.AddressController.GetAddress(System.Int32,System.Int32)">
             <summary>
-            Returns the address with a given id.
+            Returns the address with a given id of one supplier.
             </summary>
-            <param name="aid">AdressInformationId</param>
+            <param name="sid">SupplierId</param>
             <param name="id">AddressId</param>
         </member>
         <member name="M:API.Controllers.AddressController.AddAddress(System.Int32,API.DataObject.Address)">
             <summary>
-            Adds an address.
+            Adds an address to one supplier.
             </summary>
-            <param name="aid">AddressInformationId</param>
+            <param name="sid">SupplierId</param>
             <param name="value">new Address</param>
-        </member>
-        <member name="T:API.Controllers.AddressInformationController">
-            <summary>
-            This endpoint manages all operations for address information.
-            </summary>
-        </member>
-        <member name="M:API.Controllers.AddressInformationController.GetAllAddressInformation">
-            <summary>
-            Returns all address information.
-            </summary>
-        </member>
-        <member name="M:API.Controllers.AddressInformationController.GetAddressInformation(System.Int32)">
-            <summary>
-            Returns the address information with a given id.
-            </summary>
-            <param name="aid">AddressInformationId</param>
-        </member>
-        <member name="M:API.Controllers.AddressInformationController.AddAddressInformation(API.DataObject.AddressInformation)">
-            <summary>
-            Adds an address information.
-            </summary>
-            <param name="value">new AddressInformation</param>
-        </member>
-        <member name="T:API.Controllers.ContactController">
-            <summary>
-            This endpoint manages all operations for contacts.
-            </summary>
-        </member>
-        <member name="M:API.Controllers.ContactController.GetAllContacts">
-            <summary>
-            Returns all contacts.
-            </summary>
-        </member>
-        <member name="M:API.Controllers.ContactController.GetContact(System.Int32)">
-            <summary>
-            Returns the contact with a given id.
-            </summary>
-            <param name="cid">ContactId</param>
-        </member>
-        <member name="M:API.Controllers.ContactController.AddCustomer(API.DataObject.Contact)">
-            <summary>
-            Adds a contact.
-            </summary>
-            <param name="value">new Contact</param>
-        </member>
-        <member name="T:API.Controllers.CustomerController">
-            <summary>
-            This endpoint manages all operations for customers.
-            </summary>
-        </member>
-        <member name="M:API.Controllers.CustomerController.GetAllCustomers">
-            <summary>
-            Returns all customers.
-            </summary>
-        </member>
-        <member name="M:API.Controllers.CustomerController.GetCustomer(System.Int32)">
-            <summary>
-            Returns the customer with a given id.
-            </summary>
-            <param name="cid">CustomerId</param>
-        </member>
-        <member name="M:API.Controllers.CustomerController.AddCustomer(API.DataObject.Customer)">
-            <summary>
-            Adds a customer.
-            </summary>
-            <param name="value">new Customer</param>
         </member>
         <member name="T:API.Controllers.MaterialController">
             <summary>
@@ -117,76 +51,143 @@
             </summary>
             <param name="value">new Material</param>
         </member>
+        <member name="T:API.Controllers.OfferController">
+            <summary>
+            This endpoint manages all operations for offers.
+            </summary>
+        </member>
+        <member name="M:API.Controllers.OfferController.GetAllOffers">
+            <summary>
+            Returns all offers.
+            </summary>
+        </member>
+        <member name="M:API.Controllers.OfferController.GetOffers(System.Int32)">
+            <summary>
+            Returns the offer with a given id.
+            </summary>
+            <param name="oid">OfferId</param>
+        </member>
+        <member name="M:API.Controllers.OfferController.AddOffer(API.DataObject.Offer)">
+            <summary>
+            Adds an offer.
+            </summary>
+            <param name="value">new Offer</param>
+        </member>
         <member name="T:API.Controllers.PositionController">
             <summary>
-            This endpoint manages all operations for positions for one request.
+            This endpoint manages all operations for positions for one purchase requisition.
             </summary>
         </member>
         <member name="M:API.Controllers.PositionController.GetAllPositions(System.Int32)">
             <summary>
-            Returns all positions.
+            Returns all positions of one purchase requisition.
             </summary>
-            <param name="rid"></param>
+            <param name="prid">PurchaseRequisitionId</param>
         </member>
         <member name="M:API.Controllers.PositionController.GetPosition(System.Int32,System.Int32)">
             <summary>
-            Returns the position with a given id.
+            Returns the position with a given id of one purchase requisition.
             </summary>
-            <param name="rid">RequestId</param>
+            <param name="prid">PurchaseRequisitionId</param>
             <param name="pid">PositionId</param>
         </member>
         <member name="M:API.Controllers.PositionController.AddPosition(System.Int32,API.DataObject.Position)">
             <summary>
-            Adds a position.
+            Adds a position to one purchase requisition.
             </summary>
-            <param name="rid">RequestId</param>
+            <param name="prid">PurchaseRequisitionId</param>
             <param name="value">new Position</param>
         </member>
-        <member name="T:API.Controllers.RelationController">
+        <member name="T:API.Controllers.PriceInformationController">
             <summary>
-            This endpoint manages all operations for relations.
+            This endpoint manages all operations for price information for one offer.
             </summary>
         </member>
-        <member name="M:API.Controllers.RelationController.GetAllRelations">
+        <member name="M:API.Controllers.PriceInformationController.GetAllPriceInformation(System.Int32)">
             <summary>
-            Returns all relations.
+            Returns all price information of one offer.
+            </summary>
+            <param name="oid">OfferId</param>
+        </member>
+        <member name="M:API.Controllers.PriceInformationController.GetPriceInformation(System.Int32,System.Int32)">
+            <summary>
+            Returns the price information with a given id of one offer.
+            </summary>
+            <param name="oid">OfferId</param>
+            <param name="piid">PriceInformationId</param>
+        </member>
+        <member name="M:API.Controllers.PriceInformationController.AddPriceInformation(System.Int32,API.DataObject.PriceInformation)">
+            <summary>
+            Adds a price information to one offer.
+            </summary>
+            <param name="oid">OfferId</param>
+            <param name="value">new PriceInformation</param>
+        </member>
+        <member name="T:API.Controllers.PurchaseRequisitionController">
+            <summary>
+            This endpoint manages all operations for purchase requisitions.
             </summary>
         </member>
-        <member name="M:API.Controllers.RelationController.GetRelation(System.Int32)">
+        <member name="M:API.Controllers.PurchaseRequisitionController.GetAllPurchaseRequisitions">
             <summary>
-            Returns the relation with a given id.
+            Returns all purchas requisitions.
             </summary>
-            <param name="rid">RelationId</param>
         </member>
-        <member name="M:API.Controllers.RelationController.AddCustomer(API.DataObject.Relation)">
+        <member name="M:API.Controllers.PurchaseRequisitionController.GetPurchaseRequisition(System.Int32)">
             <summary>
-            Adds a relation.
+            Returns the purchase requisition with a given id.
             </summary>
-            <param name="value">new Relation</param>
+            <param name="prid">PurchaseRequisitionId</param>
+        </member>
+        <member name="M:API.Controllers.PurchaseRequisitionController.AddPurchaseRequisition(API.DataObject.PurchaseRequisition)">
+            <summary>
+            Adds a purchase requisition.
+            </summary>
+            <param name="value">new Purchase Requisition</param>
         </member>
         <member name="T:API.Controllers.RequestController">
             <summary>
-            This endpoint manages all operations for requests for one customer.
+            This endpoint manages all operations for requests.
             </summary>
         </member>
-        <member name="M:API.Controllers.RequestController.GetAllRequests(System.Int32)">
+        <member name="M:API.Controllers.RequestController.GetAllRequests">
             <summary>
             Returns all requests.
             </summary>
         </member>
-        <member name="M:API.Controllers.RequestController.GetRequest(System.Int32,System.Int32)">
+        <member name="M:API.Controllers.RequestController.GetRequest(System.Int32)">
             <summary>
             Returns the request with a given id.
             </summary>
-            <param name="cid">CustomerId</param>
             <param name="rid">RequestId</param>
         </member>
-        <member name="M:API.Controllers.RequestController.AddRequest(System.Int32,API.DataObject.Request)">
+        <member name="M:API.Controllers.RequestController.AddRequest(API.DataObject.Request)">
             <summary>
             Adds a request.
             </summary>
-            <param name="cid">CustomerId</param>
             <param name="value">new Request</param>
+        </member>
+        <member name="T:API.Controllers.SupplierController">
+            <summary>
+            This endpoint manages all operations for suppliers
+            </summary>
+        </member>
+        <member name="M:API.Controllers.SupplierController.GetAllSuppliers">
+            <summary>
+            Returns all suppliers.
+            </summary>
+        </member>
+        <member name="M:API.Controllers.SupplierController.GetSupplier(System.Int32)">
+            <summary>
+            Returns the supplier with a given id.
+            </summary>
+            <param name="sid">SupplierId</param>
+        </member>
+        <member name="M:API.Controllers.SupplierController.AddSupplier(API.DataObject.Supplier)">
+            <summary>
+            Adds a supplier.
+            </summary>
+            <param name="value">new Supplier</param>
         </member>
         <member name="T:API.Store.Context">
             <summary>
@@ -198,22 +199,12 @@
             database table Addresses
             </summary>
         </member>
-        <member name="P:API.Store.Context.AddressInformation">
-            <summary>
-            database table AddressInformation
-            </summary>
-        </member>
-        <member name="P:API.Store.Context.Customers">
-            <summary>
-            database table Customers
-            </summary>
-        </member>
-        <member name="P:API.Store.Context.Contacts">
-            <summary>
-            database table Contacts
-            </summary>
-        </member>
         <member name="P:API.Store.Context.Materials">
+            <summary>
+            database table Materials
+            </summary>
+        </member>
+        <member name="P:API.Store.Context.Offers">
             <summary>
             database table Materials
             </summary>
@@ -223,14 +214,24 @@
             database table Positions
             </summary>
         </member>
-        <member name="P:API.Store.Context.Relations">
+        <member name="P:API.Store.Context.PriceInformation">
             <summary>
-            database table Relations
+            database table Positions
+            </summary>
+        </member>
+        <member name="P:API.Store.Context.PurchaseRequisitions">
+            <summary>
+            database table Positions
             </summary>
         </member>
         <member name="P:API.Store.Context.Requests">
             <summary>
             database table Requests
+            </summary>
+        </member>
+        <member name="P:API.Store.Context.Suppliers">
+            <summary>
+            database table Supplier
             </summary>
         </member>
     </members>

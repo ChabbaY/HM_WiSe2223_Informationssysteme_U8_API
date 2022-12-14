@@ -6,13 +6,13 @@ namespace API.DataObject {
         public int Id { get; set; }
 
         [Required]
-        public int AdderssInformationId { get; set; }
+        public int SupplierId { get; set; }
 
         [MaxLength(100)]
         public string Street { get; set; }
         
         [MaxLength(100)]
-        public string House_Nr { get; set; }
+        public string HouseNumber { get; set; }
 
         [MaxLength(100)]
         public string Postcode { get; set; }

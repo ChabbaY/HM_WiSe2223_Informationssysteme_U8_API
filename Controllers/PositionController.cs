@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers {
     /// <summary>
-    /// This endpoint manages all operations for positions for one request.
+    /// This endpoint manages all operations for positions for one purchase requisition.
     /// </summary>
-    [Route("api/requests/{rid}/positions")]
+    [Route("api/purchaserequisitions/{prid}/positions")]
     [ApiController]
     public class PositionController : ControllerBase {
         private Context context;
@@ -18,38 +18,38 @@ namespace API.Controllers {
         }
 
         /// <summary>
-        /// Returns all positions.
+        /// Returns all positions of one purchase requisition.
         /// </summary>
-        /// <param name="rid"></param>
+        /// <param name="prid">PurchaseRequisitionId</param>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Position[]> GetAllPositions([FromRoute] int rid) {
-            return Ok(context.Positions.Where(v => v.RequestId == rid).ToArray());
+        public ActionResult<Position[]> GetAllPositions([FromRoute] int prid) {
+            return Ok(context.Positions.Where(v => v.PurchaseRequisitionId == prid).ToArray());
         }
 
         /// <summary>
-        /// Returns the position with a given id.
+        /// Returns the position with a given id of one purchase requisition.
         /// </summary>
-        /// <param name="rid">RequestId</param>
+        /// <param name="prid">PurchaseRequisitionId</param>
         /// <param name="pid">PositionId</param>
         [HttpGet("{pid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Position> GetPosition([FromRoute] int rid, [FromRoute] int pid) {
-            var value = context.Positions.Where(v => (v.RequestId == rid) && (v.Id == pid)).FirstOrDefault();
+        public ActionResult<Position> GetPosition([FromRoute] int prid, [FromRoute] int pid) {
+            var value = context.Positions.Where(v => (v.PurchaseRequisitionId == prid) && (v.Id == pid)).FirstOrDefault();
             if (value == null) return NotFound();
             return Ok(value);
         }
 
         /// <summary>
-        /// Adds a position.
+        /// Adds a position to one purchase requisition.
         /// </summary>
-        /// <param name="rid">RequestId</param>
+        /// <param name="prid">PurchaseRequisitionId</param>
         /// <param name="value">new Position</param>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
-        public async Task<ActionResult<Position>> AddPosition([FromRoute] int rid, [FromBody] Position value) {
+        public async Task<ActionResult<Position>> AddPosition([FromRoute] int prid, [FromBody] Position value) {
             if (ModelState.IsValid) {
                 //test if position already exists
                 if (context.Positions.Where(v => v.Id == value.Id).FirstOrDefault() != null) {
@@ -57,21 +57,19 @@ namespace API.Controllers {
                     return Conflict(); //position with id already exists, we return a conflict
                 }
 
-                //test if referenced request exists
-                if (context.Requests.Any(r => r.Id == rid) is false)
-                {
-                    ModelState.AddModelError("validationError", "Request not found");
-                    return NotFound(ModelState);
+                //test if referenced purchase requisition exists
+                if (context.PurchaseRequisitions.Any(pr => pr.Id == prid) is false) {
+                    ModelState.AddModelError("validationError", "PurchaseRequisition not found");
+                    return Conflict(ModelState);
                 }
 
                 //test if referenced material exists
-                if (context.Materials.Any(m => m.Id == value.MaterialId) is false)
-                {
+                if (context.Materials.Any(m => m.Id == value.MaterialId) is false) {
                     ModelState.AddModelError("validationError", "Material not found");
-                    return NotFound(ModelState);
+                    return Conflict(ModelState);
                 }
 
-                value.RequestId = rid; // set reference
+                value.PurchaseRequisitionId = prid; // set reference
                 context.Positions.Add(value);
                 await context.SaveChangesAsync();
 

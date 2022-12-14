@@ -52,19 +52,19 @@ namespace API {
             });
 
             //Initialize Data
-            context.AddressInformation.Add(new DataObject.AddressInformation() {//1
+            context.Suppliers.Add(new DataObject.Supplier() {//1
                 Title = "Mr",
                 Name = "Bean"
             });
-            context.AddressInformation.Add(new DataObject.AddressInformation() {//2
+            context.Suppliers.Add(new DataObject.Supplier() {//2
                 Title = "Mr",
                 Name = "Torsten Zimmer",
                 Email = "torsten.zimmer@hm.edu"
             });
             context.Addresses.Add(new DataObject.Address() {//1
-                AdderssInformationId = 1,
-                Street = "Main Avenue",
-                House_Nr = "1",
+                SupplierId = 2,
+                Street = "Lothstraﬂe",
+                HouseNumber = "64",
                 Postcode = "12345",
                 City = "City",
                 Country = "Germany",
@@ -72,38 +72,43 @@ namespace API {
                 Timezone = "UTC+1"
             });
             context.Addresses.Add(new DataObject.Address() {//2
-                AdderssInformationId = 2,
+                SupplierId = 1,
                 Street = "Main Avenue",
-                House_Nr = "1",
+                HouseNumber = "1",
                 Postcode = "67890",
                 City = "London",
                 Country = "England"
             });
-            context.Customers.Add(new DataObject.Customer() {//1
-                AddressInformationId=1
-            });
-            context.Contacts.Add(new DataObject.Contact() {//1
-                AddressInformationId=2
-            });
-            context.Relations.Add(new DataObject.Relation() {//1
-                CustomerId=1,
-                ContactId=1,
-                Comment="nothing to comment on"
-            });
-            context.Requests.Add(new DataObject.Request() {//1
-                CustomerId=1,
-                FromDate="2022/11/10",
-                UntilDate="2022/12/10"
-            });
             context.Materials.Add(new DataObject.Material() {//1
-                Name = "Iron",
-                Price = 5
+                Name = "Iron Ore",
+                Type = "Raw Materials"
+            });
+            context.PurchaseRequisitions.Add(new DataObject.PurchaseRequisition() {//1
+                NeededUntil="2022/12/24",
+                Comment="Xmas-Present"
             });
             context.Positions.Add(new DataObject.Position() {//1
-                RequestId = 1,
+                PurchaseRequisitionId = 1,
                 MaterialId = 1,
                 Pos = 1,
-                Count = 20
+                Count = 20,
+                Unit = "kg"
+            });
+            context.Requests.Add(new DataObject.Request() {//1
+                Date = "2022/12/21",
+                Deadline = "2022/12/24",
+                Comment = "Xmas-Present!!!"
+            });
+            context.Offers.Add(new DataObject.Offer() {//1
+                Date = "2022/12/22",
+                Deadline = "2022/12/24",
+                Currency = "EUR",
+                Comment = "can be delivered in time"
+            });
+            context.PriceInformation.Add(new DataObject.PriceInformation() {//1
+                OfferId = 1,
+                PositionId = 1,
+                UnitPrice = 25
             });
             context.SaveChanges();
             
