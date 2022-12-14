@@ -95,11 +95,14 @@ namespace API {
                 Unit = "kg"
             });
             context.Requests.Add(new DataObject.Request() {//1
+                PurchaseRequisitionId = 1,
                 Date = "2022/12/21",
                 Deadline = "2022/12/24",
                 Comment = "Xmas-Present!!!"
             });
             context.Offers.Add(new DataObject.Offer() {//1
+                SupplierId = 2,
+                RequestId = 1,
                 Date = "2022/12/22",
                 Deadline = "2022/12/24",
                 Currency = "EUR",
