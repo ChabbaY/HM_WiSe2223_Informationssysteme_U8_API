@@ -77,5 +77,30 @@ namespace API.Controllers {
             }
             return BadRequest(ModelState); //Model is not valid -> Validation Annotation of PriceInformation
         }
+
+        /// <summary>
+        /// Updates a price information of one offer.
+        /// </summary>
+        /// <param name="oid">OfferId</param>
+        /// <param name="value">new PriceInformation</param>
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<PriceInformation>> UpdatePriceInformation([FromRoute] int oid, [FromBody] PriceInformation value) {
+            if (ModelState.IsValid) {
+                var toUpdate = context.PriceInformation.Where(pi => (pi.Id == value.Id) && (pi.OfferId == oid)).FirstOrDefault();
+                if (toUpdate != null) {
+                    toUpdate.UnitPrice = value.UnitPrice;
+                    toUpdate.PositionId = value.PositionId;
+
+                    await context.SaveChangesAsync();
+
+                    return Ok(value);
+                } else {
+                    return NotFound(ModelState);
+                }
+            }
+            return BadRequest(ModelState);
+        }
     }
 }

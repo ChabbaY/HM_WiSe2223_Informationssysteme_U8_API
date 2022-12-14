@@ -71,5 +71,35 @@ namespace API.Controllers {
             }
             return BadRequest(ModelState); //Model is not valid -> Validation Annotation of Address
         }
+
+        /// <summary>
+        /// Updates an address of one supplier.
+        /// </summary>
+        /// <param name="sid">SupplierId</param>
+        /// <param name="value">new Address</param>
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Address>> UpdateAddress([FromRoute] int sid, [FromBody] Address value) {
+            if (ModelState.IsValid) {
+                var toUpdate = context.Addresses.Where(a => (a.Id == value.Id) && (a.SupplierId == sid)).FirstOrDefault();
+                if (toUpdate != null) {
+                    toUpdate.Street = value.Street;
+                    toUpdate.HouseNumber = value.HouseNumber;
+                    toUpdate.Postcode = value.Postcode;
+                    toUpdate.City = value.City;
+                    toUpdate.Country = value.Country;
+                    toUpdate.Region = value.Region;
+                    toUpdate.Timezone = value.Timezone;
+
+                    await context.SaveChangesAsync();
+
+                    return Ok(value);
+                } else {
+                    return NotFound(ModelState);
+                }
+            }
+            return BadRequest(ModelState);
+        }
     }
 }

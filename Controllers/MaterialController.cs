@@ -61,5 +61,29 @@ namespace API.Controllers {
             }
             return BadRequest(ModelState); //Model is not valid -> Validation Annotation of Material
         }
+
+        /// <summary>
+        /// Updates a material.
+        /// </summary>
+        /// <param name="value">new Material</param>
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Material>> UpdateMaterial([FromBody] Material value) {
+            if (ModelState.IsValid) {
+                var toUpdate = context.Materials.Where(m => m.Id == value.Id).FirstOrDefault();
+                if (toUpdate != null) {
+                    toUpdate.Name = value.Name;
+                    toUpdate.Type = value.Type;
+
+                    await context.SaveChangesAsync();
+
+                    return Ok(value);
+                } else {
+                    return NotFound(ModelState);
+                }
+            }
+            return BadRequest(ModelState);
+        }
     }
 }

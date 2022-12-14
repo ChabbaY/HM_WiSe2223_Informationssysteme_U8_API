@@ -67,5 +67,31 @@ namespace API.Controllers {
             }
             return BadRequest(ModelState); //Model is not valid -> Validation Annotation of Request
         }
+
+        /// <summary>
+        /// Updates a request.
+        /// </summary>
+        /// <param name="value">new Request</param>
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Request>> UpdateRequest([FromBody] Request value) {
+            if (ModelState.IsValid) {
+                var toUpdate = context.Requests.Where(r => r.Id == value.Id).FirstOrDefault();
+                if (toUpdate != null) {
+                    toUpdate.Date = value.Date;
+                    toUpdate.Deadline = value.Deadline;
+                    toUpdate.Comment = value.Comment;
+                    toUpdate.PurchaseRequisitionId = value.PurchaseRequisitionId;
+
+                    await context.SaveChangesAsync();
+
+                    return Ok(value);
+                } else {
+                    return NotFound(ModelState);
+                }
+            }
+            return BadRequest(ModelState);
+        }
     }
 }
