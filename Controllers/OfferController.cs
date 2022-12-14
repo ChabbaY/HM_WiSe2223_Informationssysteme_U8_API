@@ -77,13 +77,14 @@ namespace API.Controllers {
         /// <summary>
         /// Updates an offer.
         /// </summary>
+        /// <param name="oid">OfferId</param>
         /// <param name="value">new Offer</param>
-        [HttpPut]
+        [HttpPut("{oid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Offer>> UpdateOffer([FromBody] Offer value) {
+        public async Task<ActionResult<Offer>> UpdateOffer([FromRoute] int oid, [FromBody] Offer value) {
             if (ModelState.IsValid) {
-                var toUpdate = context.Offers.Where(o => o.Id == value.Id).FirstOrDefault();
+                var toUpdate = context.Offers.Where(o => o.Id == oid).FirstOrDefault();
                 if (toUpdate != null) {
                     toUpdate.Date = value.Date;
                     toUpdate.Deadline = value.Deadline;

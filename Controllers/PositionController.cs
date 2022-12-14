@@ -82,13 +82,14 @@ namespace API.Controllers {
         /// Updates a position of one purchase requisition.
         /// </summary>
         /// <param name="prid">PurchaseRequisitionId</param>
+        /// <param name="pid">PositionId</param>
         /// <param name="value">new Position</param>
-        [HttpPut]
+        [HttpPut("{pid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Position>> UpdatePosition([FromRoute] int prid, [FromBody] Position value) {
+        public async Task<ActionResult<Position>> UpdatePosition([FromRoute] int prid, [FromRoute] int pid, [FromBody] Position value) {
             if (ModelState.IsValid) {
-                var toUpdate = context.Positions.Where(p => (p.Id == value.Id) && (p.PurchaseRequisitionId == prid)).FirstOrDefault();
+                var toUpdate = context.Positions.Where(p => (p.Id == pid) && (p.PurchaseRequisitionId == prid)).FirstOrDefault();
                 if (toUpdate != null) {
                     toUpdate.Pos = value.Pos;
                     toUpdate.Count = value.Count;

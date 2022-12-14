@@ -71,13 +71,14 @@ namespace API.Controllers {
         /// <summary>
         /// Updates a request.
         /// </summary>
+        /// <param name="rid">RequestId</param>
         /// <param name="value">new Request</param>
-        [HttpPut]
+        [HttpPut("{rid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Request>> UpdateRequest([FromBody] Request value) {
+        public async Task<ActionResult<Request>> UpdateRequest([FromRoute] int rid, [FromBody] Request value) {
             if (ModelState.IsValid) {
-                var toUpdate = context.Requests.Where(r => r.Id == value.Id).FirstOrDefault();
+                var toUpdate = context.Requests.Where(r => r.Id == rid).FirstOrDefault();
                 if (toUpdate != null) {
                     toUpdate.Date = value.Date;
                     toUpdate.Deadline = value.Deadline;

@@ -32,7 +32,7 @@ namespace API.Controllers {
         /// </summary>
         /// <param name="oid">OfferId</param>
         /// <param name="piid">PriceInformationId</param>
-        [HttpGet("{pid}")]
+        [HttpGet("{piid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<PriceInformation> GetPriceInformation([FromRoute] int oid, [FromRoute] int piid) {
@@ -82,13 +82,14 @@ namespace API.Controllers {
         /// Updates a price information of one offer.
         /// </summary>
         /// <param name="oid">OfferId</param>
+        /// <param name="piid">PriceInformationId</param>
         /// <param name="value">new PriceInformation</param>
-        [HttpPut]
+        [HttpPut("{piid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<PriceInformation>> UpdatePriceInformation([FromRoute] int oid, [FromBody] PriceInformation value) {
+        public async Task<ActionResult<PriceInformation>> UpdatePriceInformation([FromRoute] int oid, [FromRoute] int piid, [FromBody] PriceInformation value) {
             if (ModelState.IsValid) {
-                var toUpdate = context.PriceInformation.Where(pi => (pi.Id == value.Id) && (pi.OfferId == oid)).FirstOrDefault();
+                var toUpdate = context.PriceInformation.Where(pi => (pi.Id == piid) && (pi.OfferId == oid)).FirstOrDefault();
                 if (toUpdate != null) {
                     toUpdate.UnitPrice = value.UnitPrice;
                     toUpdate.PositionId = value.PositionId;

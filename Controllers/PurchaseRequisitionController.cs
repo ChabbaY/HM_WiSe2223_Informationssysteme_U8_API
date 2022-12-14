@@ -66,13 +66,14 @@ namespace API.Controllers
         /// <summary>
         /// Updates a purchase requisition.
         /// </summary>
+        /// <param name="prid">PurchaseRequisitionId</param>
         /// <param name="value">new PurchaseRequisition</param>
-        [HttpPut]
+        [HttpPut("{prid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<PurchaseRequisition>> UpdatePurchaseRequisition([FromBody] PurchaseRequisition value) {
+        public async Task<ActionResult<PurchaseRequisition>> UpdatePurchaseRequisition([FromRoute] int prid, [FromBody] PurchaseRequisition value) {
             if (ModelState.IsValid) {
-                var toUpdate = context.PurchaseRequisitions.Where(pr => pr.Id == value.Id).FirstOrDefault();
+                var toUpdate = context.PurchaseRequisitions.Where(pr => pr.Id == prid).FirstOrDefault();
                 if (toUpdate != null) {
                     toUpdate.NeededUntil = value.NeededUntil;
                     toUpdate.Comment = value.Comment;

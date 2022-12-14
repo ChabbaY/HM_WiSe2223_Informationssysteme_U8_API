@@ -65,13 +65,14 @@ namespace API.Controllers {
         /// <summary>
         /// Updates a material.
         /// </summary>
+        /// <param name="mid">MaterialId</param>
         /// <param name="value">new Material</param>
-        [HttpPut]
+        [HttpPut("{mid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Material>> UpdateMaterial([FromBody] Material value) {
+        public async Task<ActionResult<Material>> UpdateMaterial([FromRoute] int mid, [FromBody] Material value) {
             if (ModelState.IsValid) {
-                var toUpdate = context.Materials.Where(m => m.Id == value.Id).FirstOrDefault();
+                var toUpdate = context.Materials.Where(m => m.Id == mid).FirstOrDefault();
                 if (toUpdate != null) {
                     toUpdate.Name = value.Name;
                     toUpdate.Type = value.Type;

@@ -65,13 +65,14 @@ namespace API.Controllers {
         /// <summary>
         /// Updates a supplier.
         /// </summary>
+        /// <param name="sid">SupplierId</param>
         /// <param name="value">new Supplier</param>
-        [HttpPut]
+        [HttpPut("{sid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Supplier>> UpdateSupplier([FromBody] Supplier value) {
+        public async Task<ActionResult<Supplier>> UpdateSupplier([FromRoute] int sid, [FromBody] Supplier value) {
             if (ModelState.IsValid) {
-                var toUpdate = context.Suppliers.Where(s => s.Id == value.Id).FirstOrDefault();
+                var toUpdate = context.Suppliers.Where(s => s.Id == sid).FirstOrDefault();
                 if (toUpdate != null) {
                     toUpdate.Title = value.Title;
                     toUpdate.Name = value.Name;

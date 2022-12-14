@@ -31,12 +31,12 @@ namespace API.Controllers {
         /// Returns the address with a given id of one supplier.
         /// </summary>
         /// <param name="sid">SupplierId</param>
-        /// <param name="id">AddressId</param>
-        [HttpGet("{id}")]
+        /// <param name="aid">AddressId</param>
+        [HttpGet("{aid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<Address> GetAddress([FromRoute] int sid, [FromRoute] int id) {
-            var value = context.Addresses.Where(v => (v.SupplierId == sid) && (v.Id == id)).FirstOrDefault();
+        public ActionResult<Address> GetAddress([FromRoute] int sid, [FromRoute] int aid) {
+            var value = context.Addresses.Where(v => (v.SupplierId == sid) && (v.Id == aid)).FirstOrDefault();
             if (value == null) return NotFound();
             return Ok(value);
         }
@@ -76,13 +76,14 @@ namespace API.Controllers {
         /// Updates an address of one supplier.
         /// </summary>
         /// <param name="sid">SupplierId</param>
+        /// <param name="aid">AddressId</param>
         /// <param name="value">new Address</param>
-        [HttpPut]
+        [HttpPut("{aid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Address>> UpdateAddress([FromRoute] int sid, [FromBody] Address value) {
+        public async Task<ActionResult<Address>> UpdateAddress([FromRoute] int sid, [FromRoute] int aid, [FromBody] Address value) {
             if (ModelState.IsValid) {
-                var toUpdate = context.Addresses.Where(a => (a.Id == value.Id) && (a.SupplierId == sid)).FirstOrDefault();
+                var toUpdate = context.Addresses.Where(a => (a.Id == aid) && (a.SupplierId == sid)).FirstOrDefault();
                 if (toUpdate != null) {
                     toUpdate.Street = value.Street;
                     toUpdate.HouseNumber = value.HouseNumber;
