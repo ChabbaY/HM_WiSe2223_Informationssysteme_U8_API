@@ -86,5 +86,27 @@ namespace API.Controllers {
             }
             return BadRequest(ModelState);
         }
+
+        /// <summary>
+        /// Delete a material. Blocks if referenced by a Position.
+        /// </summary>
+        /// <param name="mid">MaterialId</param>
+        [HttpDelete("{mid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<ActionResult<Material>> DeleteMaterial([FromRoute] int mid) {
+            if (context.Positions.Where(p => p.MaterialId == mid).Any()) {
+                //block because of reference
+                ModelState.AddModelError("referntialIntegrityViolation", "Material refernced by a Position");
+                return Conflict(ModelState);
+            }
+
+            var toDelete = context.Materials.Where(m => m.Id == mid);
+            context.Materials.RemoveRange(toDelete);
+
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

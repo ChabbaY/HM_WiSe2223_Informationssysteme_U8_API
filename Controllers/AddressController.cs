@@ -102,5 +102,22 @@ namespace API.Controllers {
             }
             return BadRequest(ModelState);
         }
+
+        /// <summary>
+        /// Delete an address of one supplier.
+        /// </summary>
+        /// <param name="sid">SupplierId</param>
+        /// <param name="aid">AddressId</param>
+        [HttpDelete("{aid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<ActionResult<Address>> DeleteAddress([FromRoute] int sid, [FromRoute] int aid) {
+            var toDelete = context.Addresses.Where(a => (a.Id == aid) && (a.SupplierId == sid));
+            context.Addresses.RemoveRange(toDelete);
+
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

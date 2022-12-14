@@ -103,5 +103,22 @@ namespace API.Controllers {
             }
             return BadRequest(ModelState);
         }
+
+        /// <summary>
+        /// Delete a price information of one offer.
+        /// </summary>
+        /// <param name="oid">OfferId</param>
+        /// <param name="piid">PriceInformationId</param>
+        [HttpDelete("{piid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<ActionResult<PriceInformation>> DeletePriceInformation([FromRoute] int oid, [FromRoute] int piid) {
+            var toDelete = context.PriceInformation.Where(pi => (pi.Id == piid) && (pi.OfferId == oid));
+            context.PriceInformation.RemoveRange(toDelete);
+
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

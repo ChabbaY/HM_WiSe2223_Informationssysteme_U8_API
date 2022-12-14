@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using API.DataObject;
 using API.Store;
@@ -86,6 +87,32 @@ namespace API.Controllers
                 }
             }
             return BadRequest(ModelState);
+        }
+
+        /// <summary>
+        /// Delete a purchase requisition. Blocks if referenced by a Request. Cascades Positions.
+        /// </summary>
+        /// <param name="prid">PurchaseRequisitionId</param>
+        [HttpDelete("{prid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<ActionResult<PurchaseRequisition>> DeletePurchaseRequisition([FromRoute] int prid) {
+            if (context.Requests.Where(r => r.PurchaseRequisitionId == prid).Any()) {
+                //block because of reference
+                ModelState.AddModelError("referntialIntegrityViolation", "PurchaseRequisition refernced by a Request");
+                return Conflict(ModelState);
+            }
+
+            //cascading delete
+            var cascade = context.Positions.Where(p => p.PurchaseRequisitionId == prid);
+            context.Positions.RemoveRange(cascade);
+
+            var toDelete = context.PurchaseRequisitions.Where(pr => pr.Id == prid);
+            context.PurchaseRequisitions.RemoveRange(toDelete);
+
+            await context.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }

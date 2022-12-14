@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using API.DataObject;
 using API.Store;
@@ -88,6 +89,32 @@ namespace API.Controllers {
                 }
             }
             return BadRequest(ModelState);
+        }
+
+        /// <summary>
+        /// Delete a supplier. Blocks if referenced by an Offer. Cascades Addresses.
+        /// </summary>
+        /// <param name="sid">SupplierId</param>
+        [HttpDelete("{sid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<ActionResult<Supplier>> DeleteSupplier([FromRoute] int sid) {
+            if (context.Offers.Where(o => o.SupplierId == sid).Any()) {
+                //block because of reference
+                ModelState.AddModelError("referntialIntegrityViolation", "Supplier refernced by an Offer");
+                return Conflict(ModelState);
+            }
+
+            //cascading delete
+            var cascade = context.Addresses.Where(a => a.SupplierId == sid);
+            context.Addresses.RemoveRange(cascade);
+
+            var toDelete = context.Suppliers.Where(s => s.Id == sid);
+            context.Suppliers.RemoveRange(toDelete);
+
+            await context.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }

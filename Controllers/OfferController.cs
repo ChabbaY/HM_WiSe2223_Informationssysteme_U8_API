@@ -102,5 +102,25 @@ namespace API.Controllers {
             }
             return BadRequest(ModelState);
         }
+
+        /// <summary>
+        /// Delete an offer. Cascades PriceInformation.
+        /// </summary>
+        /// <param name="oid">OfferId</param>
+        [HttpDelete("{oid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<ActionResult<Offer>> DeleteOffer([FromRoute] int oid) {
+            //cascading delete
+            var cascade = context.PriceInformation.Where(pi => pi.OfferId == oid);
+            context.PriceInformation.RemoveRange(cascade);
+
+            var toDelete = context.Offers.Where(o => o.Id == oid);
+            context.Offers.RemoveRange(toDelete);
+
+            await context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

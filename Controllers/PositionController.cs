@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using API.DataObject;
 using API.Store;
@@ -104,6 +105,29 @@ namespace API.Controllers {
                 }
             }
             return BadRequest(ModelState);
+        }
+
+        /// <summary>
+        /// Delete a position of one purchase requisition. Blocks if referenced by a PriceInformation.
+        /// </summary>
+        /// <param name="prid">PurchaseRequisitionId</param>
+        /// <param name="pid">PositionId</param>
+        [HttpDelete("{pid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<ActionResult<Position>> DeletePosition([FromRoute] int prid, [FromRoute] int pid) {
+            if (context.PriceInformation.Where(pi => pi.PositionId == pid).Any()) {
+                //block because of reference
+                ModelState.AddModelError("referntialIntegrityViolation", "Position refernced by a PriceInformation");
+                return Conflict(ModelState);
+            }
+
+            var toDelete = context.Positions.Where(p => (p.Id == pid) && (p.PurchaseRequisitionId == prid));
+            context.Positions.RemoveRange(toDelete);
+
+            await context.SaveChangesAsync();
+
+            return Ok();
         }
     }
 }

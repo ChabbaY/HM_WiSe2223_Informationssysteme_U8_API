@@ -37,6 +37,13 @@
             <param name="aid">AddressId</param>
             <param name="value">new Address</param>
         </member>
+        <member name="M:API.Controllers.AddressController.DeleteAddress(System.Int32,System.Int32)">
+            <summary>
+            Delete an address of one supplier.
+            </summary>
+            <param name="sid">SupplierId</param>
+            <param name="aid">AddressId</param>
+        </member>
         <member name="T:API.Controllers.MaterialController">
             <summary>
             This endpoint manages all operations for materials.
@@ -66,6 +73,12 @@
             <param name="mid">MaterialId</param>
             <param name="value">new Material</param>
         </member>
+        <member name="M:API.Controllers.MaterialController.DeleteMaterial(System.Int32)">
+            <summary>
+            Delete a material.
+            </summary>
+            <param name="mid">MaterialId</param>
+        </member>
         <member name="T:API.Controllers.OfferController">
             <summary>
             This endpoint manages all operations for offers.
@@ -94,6 +107,12 @@
             </summary>
             <param name="oid">OfferId</param>
             <param name="value">new Offer</param>
+        </member>
+        <member name="M:API.Controllers.OfferController.DeleteOffer(System.Int32)">
+            <summary>
+            Delete an offer.
+            </summary>
+            <param name="oid">OfferId</param>
         </member>
         <member name="T:API.Controllers.PositionController">
             <summary>
@@ -128,6 +147,13 @@
             <param name="pid">PositionId</param>
             <param name="value">new Position</param>
         </member>
+        <member name="M:API.Controllers.PositionController.DeletePosition(System.Int32,System.Int32)">
+            <summary>
+            Delete a position of one purchase requisition.
+            </summary>
+            <param name="prid">PurchaseRequisitionId</param>
+            <param name="pid">PositionId</param>
+        </member>
         <member name="T:API.Controllers.PriceInformationController">
             <summary>
             This endpoint manages all operations for price information for one offer.
@@ -161,6 +187,13 @@
             <param name="piid">PriceInformationId</param>
             <param name="value">new PriceInformation</param>
         </member>
+        <member name="M:API.Controllers.PriceInformationController.DeletePriceInformation(System.Int32,System.Int32)">
+            <summary>
+            Delete a price information of one offer.
+            </summary>
+            <param name="oid">OfferId</param>
+            <param name="piid">PriceInformationId</param>
+        </member>
         <member name="T:API.Controllers.PurchaseRequisitionController">
             <summary>
             This endpoint manages all operations for purchase requisitions.
@@ -189,6 +222,12 @@
             </summary>
             <param name="prid">PurchaseRequisitionId</param>
             <param name="value">new PurchaseRequisition</param>
+        </member>
+        <member name="M:API.Controllers.PurchaseRequisitionController.DeletePurchaseRequisition(System.Int32)">
+            <summary>
+            Delete a purchase requisition.
+            </summary>
+            <param name="prid">PurchaseRequisitionId</param>
         </member>
         <member name="T:API.Controllers.RequestController">
             <summary>
@@ -219,6 +258,12 @@
             <param name="rid">RequestId</param>
             <param name="value">new Request</param>
         </member>
+        <member name="M:API.Controllers.RequestController.DeleteRequest(System.Int32)">
+            <summary>
+            Delete a request.
+            </summary>
+            <param name="rid">RequestId</param>
+        </member>
         <member name="T:API.Controllers.SupplierController">
             <summary>
             This endpoint manages all operations for suppliers
@@ -247,6 +292,12 @@
             </summary>
             <param name="sid">SupplierId</param>
             <param name="value">new Supplier</param>
+        </member>
+        <member name="M:API.Controllers.SupplierController.DeleteSupplier(System.Int32)">
+            <summary>
+            Delete a supplier.
+            </summary>
+            <param name="sid">SupplierId</param>
         </member>
         <member name="T:API.Store.Context">
             <summary>
