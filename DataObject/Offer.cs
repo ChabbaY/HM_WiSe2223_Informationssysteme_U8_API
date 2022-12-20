@@ -1,4 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace API.DataObject {
     public class Offer {
@@ -24,5 +27,15 @@ namespace API.DataObject {
 
         [Required]
         public int RequestId { get; set; }
+
+        [IgnoreDataMember]
+        [JsonIgnore]
+        public double PricesSum { get; set; }//copied from referenced price information
+        
+        public double Price {
+            get {
+                return PricesSum;
+            }
+        }
     }
 }

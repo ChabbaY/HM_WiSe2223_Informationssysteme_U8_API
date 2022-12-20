@@ -97,6 +97,11 @@ namespace API.Controllers {
                     toUpdate.Unit = value.Unit;
                     toUpdate.MaterialId = value.MaterialId;
 
+                    //update count where reference is set
+                    foreach (PriceInformation x in context.PriceInformation.Where(pi => pi.PositionId == pid)) {
+                        x.Count = value.Count;
+                    }
+
                     await context.SaveChangesAsync();
 
                     return Ok(value);

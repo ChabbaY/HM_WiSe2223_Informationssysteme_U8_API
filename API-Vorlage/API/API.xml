@@ -75,7 +75,7 @@
         </member>
         <member name="M:API.Controllers.MaterialController.DeleteMaterial(System.Int32)">
             <summary>
-            Delete a material.
+            Delete a material. Blocks if referenced by a Position.
             </summary>
             <param name="mid">MaterialId</param>
         </member>
@@ -110,7 +110,7 @@
         </member>
         <member name="M:API.Controllers.OfferController.DeleteOffer(System.Int32)">
             <summary>
-            Delete an offer.
+            Delete an offer. Cascades PriceInformation.
             </summary>
             <param name="oid">OfferId</param>
         </member>
@@ -149,7 +149,7 @@
         </member>
         <member name="M:API.Controllers.PositionController.DeletePosition(System.Int32,System.Int32)">
             <summary>
-            Delete a position of one purchase requisition.
+            Delete a position of one purchase requisition. Blocks if referenced by a PriceInformation.
             </summary>
             <param name="prid">PurchaseRequisitionId</param>
             <param name="pid">PositionId</param>
@@ -225,7 +225,7 @@
         </member>
         <member name="M:API.Controllers.PurchaseRequisitionController.DeletePurchaseRequisition(System.Int32)">
             <summary>
-            Delete a purchase requisition.
+            Delete a purchase requisition. Blocks if referenced by a Request. Cascades Positions.
             </summary>
             <param name="prid">PurchaseRequisitionId</param>
         </member>
@@ -260,7 +260,7 @@
         </member>
         <member name="M:API.Controllers.RequestController.DeleteRequest(System.Int32)">
             <summary>
-            Delete a request.
+            Delete a request. Blocks if referenced by an Offer.
             </summary>
             <param name="rid">RequestId</param>
         </member>
@@ -295,7 +295,7 @@
         </member>
         <member name="M:API.Controllers.SupplierController.DeleteSupplier(System.Int32)">
             <summary>
-            Delete a supplier.
+            Delete a supplier. Blocks if referenced by an Offer. Cascades Addresses.
             </summary>
             <param name="sid">SupplierId</param>
         </member>

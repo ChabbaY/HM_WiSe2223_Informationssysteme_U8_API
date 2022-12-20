@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using API.DataObject;
 using API.Store;
@@ -69,9 +71,14 @@ namespace API.Controllers {
                     return Conflict(ModelState);
                 }
 
+                //copy count from position
+                value.Count = context.Positions.Where(p => p.Id == value.PositionId).FirstOrDefault().Count;
+
                 value.OfferId = oid; // set reference
                 context.PriceInformation.Add(value);
                 await context.SaveChangesAsync();
+
+                await UpdateOffer(oid);
 
                 return Ok(value); //we return the price information
             }
@@ -94,7 +101,12 @@ namespace API.Controllers {
                     toUpdate.UnitPrice = value.UnitPrice;
                     toUpdate.PositionId = value.PositionId;
 
+                    //copy count from position
+                    toUpdate.Count = context.Positions.Where(p => p.Id == value.PositionId).FirstOrDefault().Count;
+
                     await context.SaveChangesAsync();
+
+                    await UpdateOffer(oid);
 
                     return Ok(value);
                 } else {
@@ -118,7 +130,25 @@ namespace API.Controllers {
 
             await context.SaveChangesAsync();
 
+            await UpdateOffer(oid);
+
             return Ok();
+        }
+
+        private async Task UpdateOffer(int offerId) {
+            //update offer (prices); after save to include current
+            context.Offers.Where(o => o.Id == offerId).FirstOrDefault().PricesSum =
+                CalculatePricesSum(offerId);
+
+            await context.SaveChangesAsync();
+        }
+
+        private double CalculatePricesSum(int offerId) {
+            double result = 0d;
+            foreach (PriceInformation x in context.PriceInformation.Where(pi => pi.OfferId == offerId)) {
+                result += x.Price;
+            }
+            return result;
         }
     }
 }

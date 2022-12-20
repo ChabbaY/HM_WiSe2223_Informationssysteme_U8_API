@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace API.DataObject {
     public class PriceInformation {
@@ -13,5 +15,11 @@ namespace API.DataObject {
 
         [Required]
         public int PositionId { get; set; }
+
+        [IgnoreDataMember]
+        [JsonIgnore]
+        public double Count { get; set; }//copied from referenced position
+
+        public double Price { get { return UnitPrice * Count; } }
     }
 }

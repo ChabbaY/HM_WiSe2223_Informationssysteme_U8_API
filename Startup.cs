@@ -33,6 +33,7 @@ namespace API {
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 options.IncludeXmlComments(xmlPath);
+                options.SchemaFilter<SwaggerSchemaFilter>();
             });
         }
 
@@ -106,12 +107,16 @@ namespace API {
                 Date = "2022/12/22",
                 Deadline = "2022/12/24",
                 Currency = "EUR",
-                Comment = "can be delivered in time"
+                Comment = "can be delivered in time",
+                PricesSum = 500d//don't change, hidden field will only be updated on data change
+                                //and thus needs to be instantiated correctly
             });
             context.PriceInformation.Add(new DataObject.PriceInformation() {//1
                 OfferId = 1,
                 PositionId = 1,
-                UnitPrice = 25
+                UnitPrice = 25,
+                Count = 20//don't change, hidden field will only be updated on data change
+                          //and thus needs to be instantiated correctly
             });
             context.SaveChanges();
             
